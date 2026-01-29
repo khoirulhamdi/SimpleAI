@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-color: #09090b;
+  --text-primary: #fdfdfd;
+  --user-bubble: #27272a;
+  --input-bg: #18181b;
+}
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* KUNCI BODY BIAR GAK MENTAL-MENTAL */
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-color);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow: hidden; /* Anti scroll body */
+  overscroll-behavior: none; /* Anti bouncing di iPhone */
+}
+
+#root {
+  height: 100%;
+}
+
+/* CONTAINER FLEXBOX (RAHASIA STABILNYA DISINI) */
+.app-container {
+  display: flex;       /* Aktifin mode tumpukan */
+  flex-direction: column; /* Tumpuk ke bawah */
+  height: 100%;        /* Fallback */
+  height: 100dvh;      /* Full layar dinamis */
+  background-color: var(--bg-color);
+}
+
+/* HEADER */
+.header {
+  flex-shrink: 0; /* Header gak boleh gepeng */
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background-color: var(--bg-color);
+  z-index: 10;
+}
+.header h1 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #71717a;
+  text-transform: uppercase;
+}
+
+/* CHAT AREA (ELASTIS) */
+.chat-area {
+  flex: 1; /* Isi semua ruang sisa */
+  overflow-y: auto; /* Scroll cuma di sini */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  /* Hapus scrollbar */
+  scrollbar-width: none;
+}
+.chat-area::-webkit-scrollbar { display: none; }
+
+/* BARIS PESAN */
+.message-row {
+  display: flex;
+  width: 100%;
+}
+
+/* USER (KANAN) */
+.message-row.user {
+  justify-content: flex-end;
+}
+.bubble-user {
+  background-color: #27272a;
+  color: var(--text-primary);
+  padding: 12px 18px;
+  border-radius: 20px;
+  border-bottom-right-radius: 4px;
+
+  /* FIX LEBAR BUBBLE BIAR PAS KONTEN */
+  max-width: 85%;
+  width: fit-content;
+
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+/* BOT (KIRI) */
+.message-row.bot {
+  justify-content: flex-start;
+}
+.text-bot {
+  color: #e4e4e7;
+  font-size: 15px;
+  line-height: 1.6;
+  width: 100%;
+  text-align: left;
+}
+
+/* INPUT CONTAINER (BUKAN ABSOLUTE LAGI) */
+.input-container {
+  flex-shrink: 0; /* Input gak boleh gepeng */
+  width: 100%;
+  padding: 15px 20px 20px 20px; /* Padding enak */
+  background-color: var(--bg-color); /* Tutupin background */
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--input-bg);
+  border: 1px solid #333;
+  border-radius: 100px;
+  padding: 8px 8px 8px 20px;
+}
+
+.input-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 16px; /* Biar gak zoom di iPhone */
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  outline: none;
+}
+
+.send-btn {
+  background-color: var(--text-primary);
+  color: black;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.send-btn:disabled {
+  background-color: #333;
+  color: #555;
+}
+
+/* FORMATTING MARKDOWN */
+.text-bot p { margin-bottom: 12px; }
+.text-bot pre {
+  background: #151516;
+  padding: 15px;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 10px 0;
+  border: 1px solid #333;
+}
+
+/* --- FIX LIST (Daftar Angka & Simbol) --- */
+/* Masalah menjorok ke kiri diselesaikan disini */
+.text-bot ul,
+.text-bot ol {
+  padding-left: 24px; /* Kasih jarak buat angka/bullet */
+  margin-left: 4px;   /* Geser dikit biar lurus sama teks paragraf */
+  margin-bottom: 16px;
+  display: block;
+}
+
+.text-bot li {
+  margin-bottom: 8px; /* Jarak antar poin biar ga dempet */
+  padding-left: 6px;  /* Jarak antara angka dan teks */
+}
+
+/* Biar angka list warnanya agak terang dikit */
+.text-bot li::marker {
+  color: #a1a1aa;
+  font-weight: 600;
+}
+
+
+/* --- FIX EQUATION (Rumus Matematika) --- */
+
+/* 1. Rumus Blok (Yang gede di tengah) */
+/* Kita kasih kotak, background, dan scrollbar */
+.katex-display {
+  background-color: #151516; /* Background kotak rumus */
+  padding: 20px 16px;        /* Jarak dalem */
+  border-radius: 12px;       /* Sudut tumpul */
+  border: 1px solid #333;    /* Garis pinggir tipis */
+  margin: 20px 0;            /* Jarak atas bawah */
+
+  overflow-x: auto;          /* Scroll samping kalo rumus panjang */
+  overflow-y: hidden;
+
+  /* Styling Scrollbar khusus rumus */
+  scrollbar-width: thin;
+  scrollbar-color: #444 transparent;
+}
+
+/* 2. Rumus Inline (Yang nyelip di kalimat) */
+.katex {
+  font-size: 1.1em !important; /* Gedein dikit font rumusnya */
+  font-family: 'KaTeX_Main', 'Times New Roman', serif;
+  color: #e4e4e7; /* Pastikan warna putih */
+}
+
+/* 3. Tanda pecahan/akar/pangkat biar jelas */
+.katex-html {
+  overflow: visible; /* Biar akar kuadrat ga kepotong atasnya */
+}
+
+/* Fix warna garis pecahan (fraction bar) biar ga ilang di dark mode */
+.katex .frac-line {
+  border-bottom-color: #e4e4e7 !important;
+}
